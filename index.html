@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="data.js"></script>
+  </head>
+  <body>
+    <div class="info-container">
+      <div class="winrate">
+        <h5>Average Winrate</h5>
+        <p>80%</p>
+      </div>
+      <div class="container2">
+        <h5>Average Winrate</h5>
+        <p>Winrate info here</p>
+      </div>
+      <div class="container3">
+        <h5>Average Winrate</h5>
+        <p>Winrate info here</p>
+      </div>
+    </div>
+    <div class="dashboard">
+      <div class="recent-trades-container">
+        <h5 id="trades-title">Recent Trades</h5>
+        <div class="trade-info">
+          <p>Close date</p>
+          <p>Symbol</p>
+          <p>Net P&L</p>
+        </div>
+        <div class="trade-list">
+          <p class="item">12/22</p>
+          <p class="item">XAUUSD</p>
+          <p class="item">$12</p>
+        </div>
+      </div>
+      <div class="calendar">
+        <div class="date">
+          <ul>
+            <li class="prev">&#10094;</li>
+            <li>Today</li>
+            <li class="next">&#10095;</li>
+            <li>August 2024</li>
+          </ul>
+        </div>
+        <div class="weekdays">
+          <div>Sun</div>
+          <div>Mon</div>
+          <div>Tue</div>
+          <div>Wed</div>
+          <div>Thu</div>
+          <div>Fri</div>
+          <div>Sat</div>
+        </div>
+        <div class="days">
+          <div class="day" id="day"></div>
+          <div class="day"></div>
+          <div class="day"></div>
+          <div class="day"></div>
+          <div class="day"></div>
+          <div class="day"></div>
+          <div class="day"></div>
+          <div class="day"></div>
+          <div class="day"></div>
+          <div class="day"></div>
+          <div class="day"></div>
+          <div class="day"></div>
+          <div class="day"></div>
+          <div class="day"></div>
+          <div class="day"></div>
+          <div class="day"></div>
+          <div class="day"></div>
+          <div class="day"></div>
+          <div class="day"></div>
+          <div class="day"></div>
+          <div class="day"></div>
+          <div class="day"></div>
+          <div class="day"></div>
+          <div class="day"></div>
+          <div class="day"></div>
+          <div class="day"></div>
+          <div class="day"></div>
+          <div class="day"></div>
+          <div class="day"></div>
+          <div class="day"></div>
+          <div class="day"></div>
+          <div class="day"></div>
+          <div class="day"></div>
+          <div class="day"></div>
+          <div class="day"></div>
+        </div>
+        <div class="modal" id="MyModal">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 id="modal-title">Add Trade</h5>
+              <button class="close" id="close-modal">&times;</button>
+            </div>
+            <div class="form-group">
+              <label for="symbol">Symbol:</label>
+              <input type="text" id="symbol" placeholder="e.g., AAPL, NFLX, MES" />
+            </div>
+            <div class="form-group">
+              <label for="amount">P&L Amount:</label>
+              <input type="number" id="amount" placeholder="Enter amount (negative for loss)" />
+            </div>
+            <div class="buttons">
+              <button class="add-trade" id="add-trade">Add Trade</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
