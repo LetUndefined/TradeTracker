@@ -226,7 +226,7 @@ label {
   background-color: #dddddd;
 }
 .today {
-  background-color: red;
+  background-color: rgb(255, 215, 139);
 }
 
 .day-empty {
@@ -255,4 +255,21 @@ span {
   position: absolute;
   top: 10%;
   left: 80%;
+  border-radius: 10px;
+}
+
+.trade-indicator {
+  font-size: 18px;
+  border-radius: 3px;
+  margin-top: 5px;
+}
+
+.trade-indicator.profit {
+  background-color: #c8e6c9;
+  color: #2e7d32;
+}
+
+.trade-indicator.loss {
+  background-color: #ffcdd2;
+  color: #c62828;
 }

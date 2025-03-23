@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  //Get elements
+  // Get elements
   const calendar = document.querySelector("#calendar");
   const prev = document.querySelector("#prev");
   const next = document.querySelector("#next");
@@ -15,8 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     trades = JSON.parse(localStorage.getItem("trades"));
   }
 
-  //variables for calendar
-
+  // Variables for calendar
   let currentDate = new Date();
   let currentMonth = currentDate.getMonth();
   let currentYear = currentDate.getFullYear();
@@ -24,11 +23,14 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderCalendar(month, year) {
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-    document.querySelector(".date li:nth-child(4)").textContent = `${monthNames[month]}  ${year}`;
+    document.querySelector(".date li:nth-child(4)").textContent = `${monthNames[month]} ${year}`;
 
+    // Find the first day in the month
     const firstDay = new Date(year, month, 1).getDay();
+    // Get the amount of days in the month
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
+    // Creating the days for the calendar
     let daysContainer = document.querySelector(".days");
 
     if (!daysContainer) {
@@ -39,35 +41,45 @@ document.addEventListener("DOMContentLoaded", () => {
 
     daysContainer.innerHTML = "";
 
+    // Create empty placeholders for non-existing days at the beginning of the month
     for (let i = 0; i < firstDay; i++) {
       const emptyDay = document.createElement("div");
-      emptyDay.classList = "day-empty";
+      emptyDay.classList.add("day-empty");
       daysContainer.appendChild(emptyDay);
     }
 
+    // Create a box for every day of the month
     for (let i = 1; i <= daysInMonth; i++) {
       const dayElement = document.createElement("div");
       dayElement.classList.add("day");
-
-      if (i === currentDate.getDate() && month === currentDate.getMonth() && year === currentDate.getFullYear()) {
-        dayElement.classList.add("today");
-      }
 
       const dateNumber = document.createElement("span");
       dateNumber.textContent = i;
       dayElement.appendChild(dateNumber);
 
-      daysContainer.appendChild(dayElement);
-      document.querySelectorAll(".day").forEach((item) => {
-        item.addEventListener("click", () => {
-          const month = currentMonth;
-          const year = currentYear;
+      if (i === currentDate.getDate() && month === currentDate.getMonth() && year === currentDate.getFullYear()) {
+        dateNumber.classList.add("today");
+      }
 
-          selectedDate = new Date(year, month, i);
+      // Create a date key to check for trades
+      const dateKey = `${year}-${month + 1}-${i}`;
+      if (trades[dateKey] && trades[dateKey].length > 0) {
+        const dailyTotal = trades[dateKey].reduce((sum, trade) => sum + trade.amount, 0);
+        const tradeIndicator = document.createElement("div");
+        tradeIndicator.classList.add("trade-indicator");
 
-          modal.style.display = "block";
-        });
+        tradeIndicator.textContent = `${dailyTotal >= 0 ? "+" : "-"}$${Math.abs(dailyTotal).toFixed(2)}`;
+        tradeIndicator.classList.add(dailyTotal >= 0 ? "profit" : "loss");
+
+        dayElement.appendChild(tradeIndicator);
+      }
+
+      dayElement.addEventListener("click", () => {
+        selectedDate = new Date(year, month, i);
+        modal.style.display = "block";
       });
+
+      daysContainer.appendChild(dayElement);
     }
   }
 
@@ -77,7 +89,6 @@ document.addEventListener("DOMContentLoaded", () => {
       currentMonth = 11;
       currentYear--;
     }
-
     renderCalendar(currentMonth, currentYear);
   }
 
@@ -102,49 +113,53 @@ document.addEventListener("DOMContentLoaded", () => {
 
   renderCalendar(currentMonth, currentYear);
 
-  // functions modal
+  // Functions for modal
   function modalClose() {
     modal.style.display = "none";
     symbol.value = "";
     amount.value = "";
   }
 
+  closeModal.addEventListener("click", modalClose);
+
   window.addEventListener("click", (event) => {
     if (event.target === modal) {
-      modal.style.display = "none";
-      symbol.value = "";
-      amount.value = "";
+      modalClose();
     }
   });
 
-  // save trades to localstorage
+  // Save trades to localStorage
   function saveTrades() {
     localStorage.setItem("trades", JSON.stringify(trades));
   }
 
   function addTrade() {
-    const symbol = document.querySelector("#symbol").value.trim();
-    const amountStr = document.querySelector("#amount").value.trim();
+    const symbolValue = symbol.value.trim();
+    const amountStr = amount.value.trim();
+    const amountValue = parseFloat(amountStr);
 
-    const amount = parseFloat(amountStr);
-
-    if (!symbol || !amountStr) {
+    if (!symbolValue || !amountStr) {
       alert("Fill in all fields");
+      return;
+    }
+
+    if (!selectedDate) {
+      alert("No date selected");
       return;
     }
 
     const day = selectedDate.getDate();
     const month = selectedDate.getMonth() + 1;
     const year = selectedDate.getFullYear();
-    const dateKeys = `${year}-${month}-${day}`;
+    const dateKey = `${year}-${month}-${day}`;
 
-    if (!trades[dateKeys]) {
-      trades[dateKeys] = [];
+    if (!trades[dateKey]) {
+      trades[dateKey] = [];
     }
 
-    trades[dateKeys].push({
-      symbol: symbol,
-      amount: amount,
+    trades[dateKey].push({
+      symbol: symbolValue,
+      amount: amountValue,
       timeStamp: new Date().toISOString(),
     });
 
@@ -152,7 +167,6 @@ document.addEventListener("DOMContentLoaded", () => {
     modalClose();
     renderCalendar(currentMonth, currentYear);
   }
-  closeModal.addEventListener("click", modalClose);
 
   document.querySelector("#add-trade").addEventListener("click", addTrade);
 });
