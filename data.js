@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderCalendar(month, year) {
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-    document.querySelector(".date li:nth-child(4)").textContent = `${monthNames[month]} ${year}`;
+    document.querySelector(".date li:nth-child(2)").textContent = `${monthNames[month]} ${year}`;
 
     // Find the first day in the month
     const firstDay = new Date(year, month, 1).getDay();
